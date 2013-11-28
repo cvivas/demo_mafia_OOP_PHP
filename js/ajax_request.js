@@ -89,7 +89,6 @@ function ajax_show_state() {
 
 }
 
-
 function ajax_call() {
 	var bool = validate();
 	if (bool)
