@@ -30,9 +30,10 @@ The tree data structure is double linked, allowing traversal downwards and upwar
 
 The traversing and search algorithms include iterative and recursive versions of DFS and iterative version of BFS. 
 
-Most of the complexity is O(N) mainly due to the DFS and BFS algorithms. 
+Most of the complexity is O(N) mainly due to the DFS and BFS algorithms, except in a case involving releasing a gangster where complexity is O(N^2)
 
 A demo of this is available at the following link: <http://damp-fjord-8874.herokuapp.com/>
+You can check the tests accessing the test.php file. 
 
 
 
