@@ -122,12 +122,13 @@
 			if (($expected_jail === $calculated_jail) && ($expected_mafia === $calculated_mafia))
 				echo "test_kill_simple PASSED <br />";
 		}
-		function test_goto_jail_root_multiple_subordinates(){
-			
+
+		function test_goto_jail_root_multiple_subordinates() {
+
 			$mafia = new mafia;
 			$level = 0;
 			$location = "organization";
-			
+
 			$mafia -> insert_new_gangster("a", 1, $level, $location, null, null);
 			$mafia -> insert_new_gangster("b", 1, $level, $location, "a", null);
 			$mafia -> insert_new_gangster("c", 1, $level, $location, "a", null);
@@ -141,7 +142,7 @@
 
 			$expected_mafia = array("e", 1, "f", 2, "b", 2, "c", 2, "d", 2);
 
-			$expected_jail = array( array("a", 1, "no_name", -1, "b", 2, "c", 2, "d", 2,"e",2));
+			$expected_jail = array( array("a", 1, "no_name", -1, "b", 2, "c", 2, "d", 2, "e", 2));
 			if ($expected_jail !== $calculated_jail)
 				echo "not same jail";
 			if ($expected_mafia !== $calculated_mafia)
@@ -460,5 +461,5 @@
 				echo "test_complex_release_jail_with_kill PASSED <br />";
 
 		}
-	?>
+		?>
 	</body>
