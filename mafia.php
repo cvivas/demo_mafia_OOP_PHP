@@ -169,12 +169,15 @@ class mafia {
 		/*
 		 * This is a crucial function to our code as the "get out of jail" case depends on it.
 		 * PHP by default does a shallow copy of the gangster's subordinates.
+		 *
 		 * The options are:
-		 *  - Do a deep copy of the gangster's subordinates (not needed recursively)
-		 *  - Save an array with the names instead of "gangster" classes as subordinates and then have to do searches
+		 *  - Do a deep copy of the gangster's subordinates (not needed recursively) (not the best performance wise but a chance to use deep copy in php)
+		 *  - Save an array with the names instead of "gangster" classes as subordinates and then have to do searches (best in performance and space, but no chance to use deep clone in php)
 		 *
 		 * I chose to do a deep copy of the gangster's subordinates because it does not alter
-		 * the logical structure of the Gangster class.
+		 * the logical structure of the Gangster class and it allows me to give an example of deep cloning in php.
+		 * If it was a real life situation, we would never chose the deep copy version.
+		 *
 		 *
 		 *
 		 * */
@@ -212,6 +215,7 @@ class mafia {
 			//we add the oldest subordinate to the subordinate list of the emprisoned gangster's boss
 			if ($this -> root -> getName() == $gangster -> getName()) {
 				//we are promoting one of the root's subordinates
+				$this -> add_to_all_levels($oldest_subordinate, -1);
 				foreach ($this->root->getSubordinates() as $subs) {
 					if ($oldest_subordinate -> getName() !== $subs -> getName()) {
 						//add the same level subordinate as subordinates of the oldest subordinate
@@ -220,7 +224,7 @@ class mafia {
 					}
 					$this -> root = $oldest_subordinate;
 					$oldest_subordinate -> addBoss(null);
-					$this -> add_to_all_levels($this -> root, -1);
+
 				}
 			} else {
 				//we are promoting one of the subordinates of a gangster who is not the root element
@@ -436,6 +440,12 @@ class mafia {
 		 * $origins is the released gangster's direct subordinates when he was in jail
 		 * $destinationBoss is the node with the gangster that is being released
 		 * This function moves the gangsters in the $origins array as direct subordinates to $destinationBoss
+		 *
+		 * This function's complexity is the highest O(N^2) mainly because it has to move back the gangster's subordinates.
+		 * it detaches all the released gangster's direct subordinate from the tree an reataches them to the released gangster.
+		 * The O(N^2) cost is because it may have to detache the released gangster's subordinates promoting the second level subordinates
+		 * and therefore the remaining subordinates will need to decrease their depth level.
+		 *
 		 * */
 		foreach ($origins as $origin) {
 			if (!is_null($origin -> getBoss())) {
@@ -602,5 +612,6 @@ class mafia {
 		}
 		return $output;
 	}
+
 }
 ?>

@@ -16,6 +16,7 @@
 		// //pass
 		test_kill_simple();
 		// //pass
+		test_goto_jail_root_multiple_subordinates();
 		test_goto_jail_no_samelevel_boss();
 		// //pass
 		test_goto_jail_with_same_level_boss();
@@ -120,6 +121,33 @@
 				echo "not same mafia";
 			if (($expected_jail === $calculated_jail) && ($expected_mafia === $calculated_mafia))
 				echo "test_kill_simple PASSED <br />";
+		}
+		function test_goto_jail_root_multiple_subordinates(){
+			
+			$mafia = new mafia;
+			$level = 0;
+			$location = "organization";
+			
+			$mafia -> insert_new_gangster("a", 1, $level, $location, null, null);
+			$mafia -> insert_new_gangster("b", 1, $level, $location, "a", null);
+			$mafia -> insert_new_gangster("c", 1, $level, $location, "a", null);
+			$mafia -> insert_new_gangster("d", 2, $level, $location, "a", null);
+			$mafia -> insert_new_gangster("e", 3, $level, $location, "a", null);
+			$mafia -> insert_new_gangster("f", 1, $level, $location, "e", null);
+			$mafia -> jail_gangster("a");
+
+			$calculated_mafia = $mafia -> convert_dfs_string($mafia -> getRoot());
+			$calculated_jail = $mafia -> convert_jail_to_string_array();
+
+			$expected_mafia = array("e", 1, "f", 2, "b", 2, "c", 2, "d", 2);
+
+			$expected_jail = array( array("a", 1, "no_name", -1, "b", 2, "c", 2, "d", 2,"e",2));
+			if ($expected_jail !== $calculated_jail)
+				echo "not same jail";
+			if ($expected_mafia !== $calculated_mafia)
+				echo "not same mafia";
+			if (($expected_jail === $calculated_jail) && ($expected_mafia === $calculated_mafia))
+				echo "test_goto_jail_root_multiple_subordinates PASSED <br />";
 		}
 
 		function test_goto_jail_no_samelevel_boss() {
